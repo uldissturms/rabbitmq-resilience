@@ -7,7 +7,8 @@ This repository has been created to reflect the resiliency in rabbitmq message p
 It compares two libraries: 
  - Custom
  - Native
-As a conslusion 
+
+As a conslusion
  - the custom library curretly reject message in case exception is thrown in message handler
  - the native library provides options for:
     - putting the message back
