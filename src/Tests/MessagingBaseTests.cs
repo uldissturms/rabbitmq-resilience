@@ -12,7 +12,7 @@ namespace Tests
 		private const string _queueName = "messaging-base";
 
 		[Test]
-		public void Should_not_ack_message_when_exception_is_thrown_while_processing_message_but_acks()
+		public void Should_not_ack_message_when_exception_is_thrown_while_processing_message()
 		{
 			RabbitMqHelper.DeleteQueue(_queueName);
 
@@ -26,7 +26,7 @@ namespace Tests
 
 			var messageCount = RabbitMqHelper.GetMessageCountInAQueue(_queueName);
 
-			Assert.That(messageCount, Is.EqualTo(0));
+			Assert.That(messageCount, Is.EqualTo(1));
 		}
 
 		private static void SendSampleMessage()

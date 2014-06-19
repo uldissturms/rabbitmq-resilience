@@ -8,7 +8,7 @@ It compares two libraries:
  - Custom
  - Native
 As a conslusion 
- - the custom library is ack-ing the message when exception is thrown while processing message which is not acceptable and should not be used
+ - the custom library curretly reject message in case exception is thrown in message handler
  - the native library provides options for:
     - putting the message back
     - sending it to dead letter exchange
