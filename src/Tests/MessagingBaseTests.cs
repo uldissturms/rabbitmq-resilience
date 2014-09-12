@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using ServiceStack.Text;
 using SevenDigital.Messaging;
@@ -12,17 +12,17 @@ namespace Tests
 		private const string _queueName = "messaging-base";
 
 		[Test]
-		public void Should_not_ack_message_when_exception_is_thrown_while_processing_message()
+		public async void Should_not_ack_message_when_exception_is_thrown_while_processing_message()
 		{
 			RabbitMqHelper.DeleteQueue(_queueName);
 
 			ConfigureMessaging();
 
-			Thread.Sleep(TimeSpan.FromSeconds(1));
+			await Task.Delay(TimeSpan.FromSeconds(1));
 
 			SendSampleMessage();
 
-			Thread.Sleep(TimeSpan.FromSeconds(1));
+			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
 			var messageCount = RabbitMqHelper.GetMessageCountInAQueue(_queueName);
 
@@ -44,7 +44,9 @@ namespace Tests
 			MessagingSystem.Configure.WithDefaults();
 			MessagingSystem.Sender();
 
-			MessagingSystem.Receiver().TakeFrom(_queueName, _ => _.Handle<ISampleMessage>().With<SampleMessageHandler>());
+			MessagingSystem.Receiver()
+				.TakeFrom(_queueName, _ => _.Handle<ISampleMessage>().With<SampleMessageHandler>())
+				.SetConcurrentHandlers(1);
 		}
 	}
 
